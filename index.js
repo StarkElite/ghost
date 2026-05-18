@@ -221,10 +221,8 @@ _Digite o nome do produto_
 
 _Exemplo:_
 
-_gold_
-
-_O bot enviará o formulário
-automaticamente_
+_audi rs 200mg mdma_
+_colombia gold g3_
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -236,7 +234,7 @@ _rateio + produto_
 
 _Exemplo:_
 
-_rateio gold_
+_rateio colombia gold g3_
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -265,7 +263,7 @@ _remover SEUNOME_
 ━━━━━━━━━━━━━━━━━━
 
 🚚 *_Entrega rápida_*
-💎 Qualidade premium
+💎 *_Qualidade premium_*
 
 ━━━━━━━━━━━━━━━━━━
 👻 *_GHOST MARKET • BR_*`
@@ -328,7 +326,7 @@ if (texto === 'plantas') {
 `╔══ 🌺 *_TABELA DE PLANTAS_* 🌺  ══╗
 
 🇨🇴 *_Colombia Gold G3_*
-💰 _1Kg R$9.500_
+💰 _1Kg R$9.500,00_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -337,7 +335,7 @@ https://imgur.com/a/wI6Gor4
 ━━━━━━━━━━━━━━━━━━
 
 🤯 *_Kunk Gold A++_*
-💰 _1Kg R$10.000_
+💰 _1Kg R$10.000,00_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -346,8 +344,8 @@ https://imgur.com/a/tJJaZ2M
 ━━━━━━━━━━━━━━━━━━
 
 🇧🇴 *_Gold Boliviano_*
-💰 _1Kg R$7.500_
-🚚 Frete: R$300,00
+💰 _1Kg R$7.500,00_
+🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/GfVvioO
@@ -355,7 +353,7 @@ https://imgur.com/a/GfVvioO
 ━━━━━━━━━━━━━━━━━━
 
 🌺 *_Silver Haze_*
-💰 _1Kg R$11.500_
+💰 _1Kg R$11.500,00_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -364,7 +362,7 @@ https://imgur.com/a/2wa62SG
 ━━━━━━━━━━━━━━━━━━
 
 🐺 *_Wolf Premium_*
-💰 _1Kg R$13.000_
+💰 _1Kg R$13.000,00_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -373,7 +371,7 @@ https://imgur.com/a/mhQNFb3
 ━━━━━━━━━━━━━━━━━━
 
 🇧🇴 *_Haze Bolivian A++_*
-💰 _1Kg R$11.000_
+💰 _1Kg R$11.000,00_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -1011,8 +1009,11 @@ if (texto.endsWith(" pago")) {
 
 ${lista}
 
-👻 *_GHOST MARKET • BR_*`
-    );
+👻 *_GHOST MARKET • BR_*
+`
+);
+
+return;
 
     const todosPagos = rateio.participantes.every(p => p.pago);
 
