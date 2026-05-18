@@ -1079,8 +1079,6 @@ ${message.from}
 // EXPRESS QR WEB
 // =====================================
 
-const express = require("express");
-
 const app = express();
 
 app.get("/", (req, res) => {
@@ -1097,9 +1095,11 @@ app.get("/qrcode", (req, res) => {
   res.sendFile(filePath, (err) => {
 
     if (err) {
+
       res
       .status(404)
       .send("QR ainda não gerado.");
+
     }
 
   });
