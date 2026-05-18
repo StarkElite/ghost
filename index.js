@@ -222,8 +222,8 @@ _Exemplo:_
 
 _gold_
 
-*_O bot enviará o formulário
-automaticamente_* 📦
+_O bot enviará o formulário
+automaticamente_ 📦
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -327,8 +327,8 @@ if (texto === 'plantas') {
 `╔══ 🌺 *_TABELA DE PLANTAS_* 🌺  ══╗
 
 🇨🇴 *_Colombia Gold G3_*
-💰 _+R$ 9.500,00 - 1Kg_
-🚚 _Frete: R$ 300,00_
+💰 _R$9.500,00 - 1Kg_
+🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/wI6Gor4
@@ -336,8 +336,8 @@ https://imgur.com/a/wI6Gor4
 ━━━━━━━━━━━━━━━━━━
 
 🤯 *_Kunk Gold A++_*
-💰 _R$ 10.000,00 - 1Kg_
-🚚 _Frete: R$ 300,00_
+💰 _R$10.000,00 - 1Kg_
+🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/tJJaZ2M
@@ -345,8 +345,8 @@ https://imgur.com/a/tJJaZ2M
 ━━━━━━━━━━━━━━━━━━
 
 🇧🇴 *_Gold Boliviano_*
-💰 _R$ 7.500,00 - 1Kg_
-🚚 Frete: R$ 300,00
+💰 _R$7.500,00 - 1Kg_
+🚚 Frete: R$300,00
 
 📸 *_Mídias:_*
 https://imgur.com/a/GfVvioO
@@ -354,8 +354,8 @@ https://imgur.com/a/GfVvioO
 ━━━━━━━━━━━━━━━━━━
 
 🌺 *_Silver Haze_*
-💰 _R$ 11.500,00 - 1Kg_
-🚚 _Frete: R$ 300,00_
+💰 _R$11.500,00 - 1Kg_
+🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/2wa62SG
@@ -363,8 +363,8 @@ https://imgur.com/a/2wa62SG
 ━━━━━━━━━━━━━━━━━━
 
 🐺 *_Wolf Premium_*
-💰 _R$ 13.000,00 - 1Kg_
-🚚 _Frete: R$ 300,00_
+💰 _R$13.000,00 - 1Kg_
+🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/mhQNFb3
@@ -372,8 +372,8 @@ https://imgur.com/a/mhQNFb3
 ━━━━━━━━━━━━━━━━━━
 
 🇧🇴 *_Haze Bolivian A++_*
-💰 _R$ 11.000,00 - 1Kg_
-🚚 _Frete: R$ 300,00_
+💰 _R$11.000,00 - 1Kg_
+🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/hhxmhcT
@@ -415,8 +415,8 @@ _rateio + produto_
 ━━━━━━━━━━━━━━
 
 🚗 *_Audi RS 200mg MDMA_*
-💯 _100 uni — R$ 9,50 cada_
-📦 _1.000 uni — R$ 5,50 cada_
+💯 _100 uni — R$9,50 cada_
+📦 _1.000 uni — R$5,50 cada_
 
 📸 *_Mídias:_*
 https://imgur.com/a/K33PPyr
@@ -424,21 +424,21 @@ https://imgur.com/a/K33PPyr
 ━━━━━━━━━━━━━━
 
 🥤 *_MDMA Coca Cola_*
-🔸 _10g — R$ 850,00_
-🔸 _100g — R$ 4.000,00_
+🔸 _10g — R$850,00_
+🔸 _100g — R$4.000,00_
 
 📸 *_Mídias:_*
 https://imgur.com/a/3dVoUdC
 
-🚚 *_Frete dos dois produtos: R$ 250,00_*
+🚚 *_Frete dos dois produtos: R$250,00_*
 
 ━━━━━━━━━━━━━━
 📍 *_LINHA DO RJ LABS_*
 
 🍍 *_Abacaxi 350mg MDA_*
-💯 _100 uni — R$ 8,00 cada_
-📦 _500 uni — R$ 7,25 cada_
-🚛 _1.000 uni — R$ 4,50 cada_
+💯 _100 uni — R$8,00 cada_
+📦 _500 uni — R$7,25 cada_
+🚛 _1.000 uni — R$4,50 cada_
 
 📸 *_Mídias:_*
 https://imgur.com/a/Hw7R7XQ
@@ -446,9 +446,9 @@ https://imgur.com/a/Hw7R7XQ
 ━━━━━━━━━━━━━━
 
 ☁️ *_Breaking Bad 300mg MDA_*
-💯 _100 uni — R$ 9,50 cada_
-📦 _500 uni — R$ 8,50 cada_
-🚛 _1.000 uni — R$ 6,75 cada_
+💯 _100 uni — R$9,50 cada_
+📦 _500 uni — R$8,50 cada_
+🚛 _1.000 uni — R$6,75 cada_
 
 📸 *_Mídias:_*
 https://imgur.com/a/HaxD6c9
@@ -456,9 +456,9 @@ https://imgur.com/a/HaxD6c9
 ━━━━━━━━━━━━━━
 
 👽💕 *_Allien & Love 200mg MDA + META_*
-💯 _100 uni — R$ 10,50 cada_
-📦 _500 uni — R$ 9,50 cada_
-🚛 _1.000 uni — R$ 7,50 cada_
+💯 _100 uni — R$10,50 cada_
+📦 _500 uni — R$9,50 cada_
+🚛 _1.000 uni — R$7,50 cada_
 
 📸 *_Mídias:_*
 https://imgur.com/a/ME0g5wk
@@ -466,26 +466,26 @@ https://imgur.com/a/ME0g5wk
 ━━━━━━━━━━━━━━
 
 💎 *_MDA NACIONAL_*
-🔸 _Picado — R$ 26,00 cada g_
-🔸 _Meio Kg — R$ 12,00 cada g_
-🔸 _1 Kg — R$ 9,00 cada g_
+🔸 _Picado — R$26,00 cada g_
+🔸 _Meio Kg — R$12,00 cada g_
+🔸 _1 Kg — R$9,00 cada g_
 
 📸 *_Mídias:_*
 https://imgur.com/a/KeGERWN
 
-🚚 *_Envio de todas essas do RJ: R$ 300,00_*
+🚚 *_Envio de todas essas do RJ: R$300,00_*
 
 ━━━━━━━━━━━━━━
 
 🍕 *_Pizza Hut 330mg MDA_*
-💯 _100 uni — R$ 9,50 cada_
-📦 _500 uni — R$ 8,50 cada_
-🚛 _1.000 uni — R$ 6,50 cada_
+💯 _100 uni — R$9,50 cada_
+📦 _500 uni — R$8,50 cada_
+🚛 _1.000 uni — R$6,50 cada_
 
 📸 *_Mídias:_*
 https://imgur.com/a/RJaHjp0
 
-🚚 *_Envio: R$ 250,00_*
+🚚 *_Envio: R$250,00_*
 
 ━━━━━━━━━━━━━━
 
