@@ -138,13 +138,13 @@ async function enviar(chatId, texto) {
 // QR CODE
 // =====================================
 
-client.on("qr", (qr) => {
+client.on("qr", async (qr) => {
 
-  console.log("📲 Escaneie o QR Code:");
+  console.log("📲 Gerando QR Code...");
 
-  qrcode.generate(qr, {
-    small: true
-  });
+  await QRCode.toFile("qrcode.png", qr);
+
+  console.log("✅ QR salvo em qrcode.png");
 
 });
 
