@@ -1045,8 +1045,8 @@ ${listaFinal}
 ✅ *_Todos pagamentos confirmados_*
 📦 *_Rateio fechado com sucesso_
 
-👻 *_GHOST MARKET • BR_*`
-    );
+👻 *_GHOST MARKET • BR_*
+`;
 
         await enviar(
             message.from,
