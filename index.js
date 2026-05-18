@@ -12,6 +12,7 @@ require("whatsapp-web.js");
 const rateios = {};
 const clientesBoasVindas = {};
 const rateiosFinalizados = {};
+const antiSpam = {};
 
 // =====================================
 // TABELA PRODUTOS
@@ -175,8 +176,18 @@ client.on("ready", () => {
 
 client.on("message", async (message) => {
 
-  const texto =
-    message.body.toLowerCase().trim();
+  const texto = message.body.toLowerCase().trim();
+
+const agora = Date.now();
+
+if (
+    antiSpam[message.from] &&
+    agora - antiSpam[message.from] < 1500
+) {
+    return;
+}
+
+antiSpam[message.from] = agora;
 
   const produtos =
     Object.keys(tabelaValores);
@@ -189,7 +200,8 @@ client.on("message", async (message) => {
 
     clientesBoasVindas[message.from] = true;
 
-    await enviar(message.from,
+    await enviar(
+        message.from,
 
 `╔════════════════════╗
       👻 *_GHOST MARKET_* 👻
@@ -269,7 +281,8 @@ _remover SEUNOME_
 👻 *_GHOST MARKET • BR_*`
     );
 
-  }
+return;
+}
 
   // =====================================
   // MENU
@@ -957,48 +970,71 @@ em uma única mensagem_*
 // MARCAR COMO PAGO
 // =====================================
 
-if (texto.endsWith(" pago")) {
+if (texto.endsWith(" pagamento confirmado")) {
 
-    const vulgoPago = texto.replace(" pago", "").trim();
+    const vulgoPago = texto
+        .replace(" pagamento confirmado", "")
+        .trim()
+        .toLowerCase();
 
-const rateio = Object.values(rateios).find(r =>
-    r.participantes.some(
-        p => p.nome.toLowerCase() === vulgoPago
-    )
-);
+    // procura o rateio do participante
+    const rateio = Object.values(rateios).find(r =>
+        r.participantes.some(
+            p => p.nome.toLowerCase().trim() === vulgoPago
+        )
+    );
 
     if (!rateio) {
+
         await enviar(
             message.from,
-            "❌ Nenhum rateio aberto."
+            "❌ Nenhum participante encontrado em rateios ativos."
         );
+
         return;
     }
 
+    // procura participante
     const participante = rateio.participantes.find(
-        p => p.nome.toLowerCase() === vulgoPago
+        p => p.nome.toLowerCase().trim() === vulgoPago
     );
 
     if (!participante) {
+
         await enviar(
             message.from,
             "❌ Participante não encontrado."
         );
+
         return;
     }
 
+    // verifica se já foi pago
+    if (participante.pago) {
+
+        await enviar(
+            message.from,
+            `⚠️ ${participante.nome} já está marcado como pago.`
+        );
+
+        return;
+    }
+
+    // confirma pagamento
     participante.pago = true;
 
-    let lista = "";
+    // monta lista atualizada
+    let listaAtualizada = "";
 
     rateio.participantes.forEach((p, index) => {
 
-        lista += `${index + 1}. ${p.nome}\n`;
-        lista += `📦 ${p.quantidade}g — R$ ${dinheiro(p.valor)}\n`;
-        lista += `${p.pago ? "✅ PAGO" : "⌛ PENDENTE"}\n\n`;
+        listaAtualizada += `${index + 1}. ${p.nome}\n`;
+        listaAtualizada += `📦 ${p.quantidade}g — R$ ${dinheiro(p.valor)}\n`;
+        listaAtualizada += `${p.pago ? "✅ PAGO" : "⌛ PENDENTE"}\n\n`;
 
     });
 
+    // envia confirmação
     await enviar(
         message.from,
 
@@ -1007,21 +1043,23 @@ const rateio = Object.values(rateios).find(r =>
 ━━━━━━━━━━━━━━
 
 👤 ${participante.nome}
-✅ _Status atualizado_
+🌿 ${rateio.produto}
 
 ━━━━━━━━━━━━━━
 
-${lista}
+${listaAtualizada}
 
 👻 *_GHOST MARKET • BR_*
 `
-);
+    );
 
-  const todosPagos = rateio.participantes.every(p => p.pago);
+    // verifica se todos pagaram
+    const todosPagos = rateio.participantes.every(
+        p => p.pago
+    );
 
-    const bateuMeta = rateio.vendido >= 1000;
-
-    if (todosPagos && bateuMeta) {
+    // finaliza rateio
+    if (todosPagos) {
 
         let listaFinal = "";
 
@@ -1033,9 +1071,10 @@ ${lista}
 
         });
 
-        rateiosFinalizados[rateio.produto] = `
-━━━━━━━━━━━━━━
-🏆 *_RATEIO FINALIZADO_* 👻
+        rateiosFinalizados[rateio.produto] =
+
+`━━━━━━━━━━━━━━
+🏆 *_RATEIO FINALIZADO_*
 ━━━━━━━━━━━━━━
 
 🌿 *_Produto:_*
@@ -1046,7 +1085,7 @@ ${rateio.produto}
 ${listaFinal}
 
 ✅ *_Todos pagamentos confirmados_*
-📦 *_Rateio fechado com sucesso_
+📦 *_Rateio fechado com sucesso_*
 
 👻 *_GHOST MARKET • BR_*
 `;
@@ -1055,35 +1094,12 @@ ${listaFinal}
             message.from,
             rateiosFinalizados[rateio.produto]
         );
+
     }
 
     return;
 }
   
-  if (texto.startsWith("lista ")) {
-
-    const nomeRateio = texto.replace("lista ", "").trim();
-
-    const lista = rateiosFinalizados[nomeRateio];
-
-    if (!lista) {
-
-        await enviar(
-            message.from,
-            "❌ Nenhuma lista encontrada para esse rateio."
-        );
-
-        return;
-    }
-
-    await enviar(
-        message.from,
-        lista
-    );
-
-    return;
-}
-
 // ====================================
 // RECEBER FORMULÁRIO
 // ====================================
