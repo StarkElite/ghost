@@ -948,7 +948,82 @@ em uma única mensagem_*
 
     return;
   }
+  
+// =====================================
+// MARCAR COMO PAGO
+// =====================================
 
+if (texto.endsWith(' pago')) {
+
+  if (!rateios[message.from]) {
+    return;
+  }
+
+  const vulgo =
+    texto.replace(' pago', '').trim();
+
+  const rateio =
+    rateios[message.from];
+
+  const participante =
+    rateio.participantes.find(
+      p => p.vulgo === vulgo
+    );
+
+  if (!participante) {
+
+    await enviar(
+      message.from,
+      `❌ Vulgo não encontrado.`
+    );
+
+    return;
+  }
+
+  participante.pago = true;
+
+  let lista = '';
+
+  rateio.participantes.forEach((p, index) => {
+
+    const valorProduto =
+      (rateio.valorKg / 1000)
+      * p.quantidade;
+
+    const freteDividido =
+      rateio.frete
+      / rateio.participantes.length;
+
+    const totalPessoa =
+      valorProduto
+      + freteDividido;
+
+    lista +=
+
+`${index + 1}️⃣ ${p.vulgo}
+
+📦 ${p.quantidade}g • 💰 R$ ${dinheiro(totalPessoa)}
+
+${p.pago ? '✅ PAGO' : '⌛ PENDENTE'}
+
+`;
+  });
+
+  await enviar(message.from,
+
+`╔════════════════════╗
+      💰 *_PAGAMENTO CONFIRMADO_*
+╚════════════════════╝
+
+${lista}
+
+━━━━━━━━━━━━━━━━━━
+👻 *_GHOST MARKET • BR_*`
+  );
+
+  return;
+}
+  
   // =====================================
   // RECEBER FORMULÁRIO
   // =====================================
@@ -1000,6 +1075,45 @@ ${message.from}
   }
 
 });
+
+// =====================================
+// EXPRESS QR WEB
+// =====================================
+
+const express = require("express");
+const path = require("path");
+
+const app = express();
+
+app.get("/", (req, res) => {
+
+  res.send("👻 GHOST MARKET ONLINE");
+
+});
+
+app.get("/qrcode", (req, res) => {
+
+  const filePath =
+    path.join(__dirname, "qrcode.png");
+
+  res.sendFile(filePath, (err) => {
+
+    if (err) {
+      res
+      .status(404)
+      .send("QR ainda não gerado.");
+    }
+
+  });
+
+});
+
+app.listen(
+  process.env.PORT || 3000,
+  () => {
+    console.log("🌐 WEB ONLINE");
+  }
+);
 
 // =====================================
 // INITIALIZE
