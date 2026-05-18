@@ -11,6 +11,7 @@ require("whatsapp-web.js");
 
 const rateios = {};
 const clientesBoasVindas = {};
+const rateiosFinalizados = {};
 
 // =====================================
 // TABELA PRODUTOS
@@ -223,7 +224,7 @@ _Exemplo:_
 _gold_
 
 _O bot enviará o formulário
-automaticamente_ 📦
+automaticamente_
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -327,7 +328,7 @@ if (texto === 'plantas') {
 `╔══ 🌺 *_TABELA DE PLANTAS_* 🌺  ══╗
 
 🇨🇴 *_Colombia Gold G3_*
-💰 _R$9.500,00 - 1Kg_
+💰 _1Kg R$9.500_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -336,7 +337,7 @@ https://imgur.com/a/wI6Gor4
 ━━━━━━━━━━━━━━━━━━
 
 🤯 *_Kunk Gold A++_*
-💰 _R$10.000,00 - 1Kg_
+💰 _1Kg R$10.000_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -345,7 +346,7 @@ https://imgur.com/a/tJJaZ2M
 ━━━━━━━━━━━━━━━━━━
 
 🇧🇴 *_Gold Boliviano_*
-💰 _R$7.500,00 - 1Kg_
+💰 _1Kg R$7.500_
 🚚 Frete: R$300,00
 
 📸 *_Mídias:_*
@@ -354,7 +355,7 @@ https://imgur.com/a/GfVvioO
 ━━━━━━━━━━━━━━━━━━
 
 🌺 *_Silver Haze_*
-💰 _R$11.500,00 - 1Kg_
+💰 _1Kg R$11.500_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -363,7 +364,7 @@ https://imgur.com/a/2wa62SG
 ━━━━━━━━━━━━━━━━━━
 
 🐺 *_Wolf Premium_*
-💰 _R$13.000,00 - 1Kg_
+💰 _1Kg R$13.000_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -372,7 +373,7 @@ https://imgur.com/a/mhQNFb3
 ━━━━━━━━━━━━━━━━━━
 
 🇧🇴 *_Haze Bolivian A++_*
-💰 _R$11.000,00 - 1Kg_
+💰 _1Kg R$11.000_
 🚚 _Frete: R$300,00_
 
 📸 *_Mídias:_*
@@ -380,8 +381,8 @@ https://imgur.com/a/hhxmhcT
 
 ╚══════════════════╝
 
-📩 *_Comprar:_*
-_Digite o nome produto_
+📥 *_Comprar:_*
+_Digite o nome do produto para iniciar o pedido_
 
 👥 *_Rateio:_*
 _rateio + produto_
@@ -489,8 +490,11 @@ https://imgur.com/a/RJaHjp0
 
 ━━━━━━━━━━━━━━
 
-⚡ *_Qualidade premium_*
-📦 *_Entrega rápida_*
+📥 *_Comprar:_*
+_Digite o nome do produto para iniciar o pedido_
+
+🚫 *_Balas não possuem sistema de rateio._*
+🌿 *_Rateio disponível somente para plantas._*
 
 ━━━━━━━━━━━━━━
 👻 *_GHOST MARKET • BR_*`;
@@ -955,80 +959,131 @@ em uma única mensagem_*
 // MARCAR COMO PAGO
 // =====================================
 
-if (texto.endsWith(' pago')) {
+if (texto.endsWith(" pago")) {
 
-  if (!rateios[message.from]) {
-    return;
-  }
+    const vulgoPago = texto.replace(" pago", "").trim();
 
-  const vulgo =
-    texto.replace(' pago', '').trim();
+    const rateio = rateios[message.from];
 
-  const rateio =
-    rateios[message.from];
+    if (!rateio) {
+        await enviar(
+            message.from,
+            "❌ Nenhum rateio aberto."
+        );
+        return;
+    }
 
-  const participante =
-    rateio.participantes.find(
-      p => p.vulgo === vulgo
+    const participante = rateio.participantes.find(
+        p => p.nome.toLowerCase() === vulgoPago
     );
 
-  if (!participante) {
+    if (!participante) {
+        await enviar(
+            message.from,
+            "❌ Participante não encontrado."
+        );
+        return;
+    }
+
+    participante.pago = true;
+
+    let lista = "";
+
+    rateio.participantes.forEach((p, index) => {
+
+        lista += `${index + 1}. ${p.nome}\n`;
+        lista += `📦 ${p.quantidade}g — R$ ${dinheiro(p.valor)}\n`;
+        lista += `${p.pago ? "✅ PAGO" : "⌛ PENDENTE"}\n\n`;
+
+    });
 
     await enviar(
-      message.from,
-      `❌ Vulgo não encontrado.`
-    );
+        message.from,
 
-    return;
-  }
+`━━━━━━━━━━━━━━
+💸 *_PAGAMENTO CONFIRMADO_*
+━━━━━━━━━━━━━━
 
-  participante.pago = true;
+👤 ${participante.nome}
+✅ _Status atualizado_
 
-  let lista = '';
-
-  rateio.participantes.forEach((p, index) => {
-
-    const valorProduto =
-      (rateio.valorKg / 1000)
-      * p.quantidade;
-
-    const freteDividido =
-      rateio.frete
-      / rateio.participantes.length;
-
-    const totalPessoa =
-      valorProduto
-      + freteDividido;
-
-    lista +=
-
-`${index + 1}️⃣ ${p.vulgo}
-
-📦 ${p.quantidade}g • 💰 R$ ${dinheiro(totalPessoa)}
-
-${p.pago ? '✅ PAGO' : '⌛ PENDENTE'}
-
-`;
-  });
-
-  await enviar(message.from,
-
-`╔════════════════════╗
-      💰 *_PAGAMENTO CONFIRMADO_*
-╚════════════════════╝
+━━━━━━━━━━━━━━
 
 ${lista}
 
-━━━━━━━━━━━━━━━━━━
 👻 *_GHOST MARKET • BR_*`
-  );
+    );
 
-  return;
+    const todosPagos = rateio.participantes.every(p => p.pago);
+
+    const bateuMeta = rateio.vendido >= 1000;
+
+    if (todosPagos && bateuMeta) {
+
+        let listaFinal = "";
+
+        rateio.participantes.forEach((p, index) => {
+
+            listaFinal += `${index + 1}. ${p.nome}\n`;
+            listaFinal += `📦 ${p.quantidade}g — R$ ${dinheiro(p.valor)}\n`;
+            listaFinal += `✅ PAGO\n\n`;
+
+        });
+
+        rateiosFinalizados[rateio.produto] = `
+━━━━━━━━━━━━━━
+🏆 *_RATEIO FINALIZADO_*
+━━━━━━━━━━━━━━
+
+🌿 *_Produto:_*
+${rateio.produto}
+
+━━━━━━━━━━━━━━
+
+${listaFinal}
+
+✅ *_Todos pagamentos confirmados_*
+📦 *_Rateio fechado com sucesso_
+
+👻 *_GHOST MARKET • BR_*`
+    );
+
+        await enviar(
+            message.from,
+            rateiosFinalizados[rateio.produto]
+        );
+    }
+
+    return;
 }
   
-  // =====================================
-  // RECEBER FORMULÁRIO
-  // =====================================
+  if (texto.startsWith("lista ")) {
+
+    const nomeRateio = texto.replace("lista ", "").trim();
+
+    const lista = rateiosFinalizados[nomeRateio];
+
+    if (!lista) {
+
+        await enviar(
+            message.from,
+            "❌ Nenhuma lista encontrada para esse rateio."
+        );
+
+        return;
+    }
+
+    await enviar(
+        message.from,
+        lista
+    );
+
+    return;
+}
+
+// ====================================
+// RECEBER FORMULÁRIO
+// ====================================
 
   if (
     texto.includes('nome:') &&
@@ -1037,7 +1092,7 @@ ${lista}
   ) {
 
     const numeroNeurox =
-      '557388480568@c.us';
+      '5519987112750@c.us';
 
     await enviar(
 
