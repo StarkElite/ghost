@@ -124,9 +124,9 @@ function barra(porcentagem) {
     Math.round((porcentagem / 100) * total);
 
   return (
-    '█'.repeat(preenchido) +
-    '░'.repeat(total - preenchido)
-  );
+    '🟢'.repeat(preenchido) +
+    '⚫'.repeat(total - preenchido)
+);
 
 }
 
@@ -192,7 +192,7 @@ client.on("message", async (message) => {
     await enviar(message.from,
 
 `╔════════════════════╗
-      👻 *_GHOST MARKET_*
+      👻 *_GHOST MARKET_* 👻
 ╚════════════════════╝
 
 🔥 *_Bem-vindo ao sistema oficial_*
@@ -571,7 +571,7 @@ para plantas._*
   await enviar(message.from,
 
 `╔════════════════════╗
-      💎 *_RATEIO ONLINE_* 💎
+      👻 *_RATEIO GHOST_* 👻
 ╚════════════════════╝
 
 🍫 ${produto.toUpperCase()}
@@ -715,7 +715,7 @@ ${1000 - rateio.total}g`
     await enviar(message.from,
 
 `╔════════════════════╗
-      💎 *_RATEIO BLACK_* 💎
+      👻 *_RATEIO GHOST_* 👻
 ╚════════════════════╝
 
 🍫 ${rateio.produto.toUpperCase()}
@@ -745,7 +745,7 @@ ${progresso} ${porcentagem.toFixed(0)}%
       await enviar(message.from,
 
 `╔════════════════════╗
-      ✅ *_RATEIO FULL_*
+      ✅ *_RATEIO FULL_* 👻
 ╚════════════════════╝
 
 🎯 *_META ATINGIDA_*
@@ -1032,7 +1032,7 @@ ${lista}
 
         rateiosFinalizados[rateio.produto] = `
 ━━━━━━━━━━━━━━
-🏆 *_RATEIO FINALIZADO_*
+🏆 *_RATEIO FINALIZADO_* 👻
 ━━━━━━━━━━━━━━
 
 🌿 *_Produto:_*
