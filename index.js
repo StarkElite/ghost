@@ -100,9 +100,7 @@ const client = new Client({
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--disable-features=site-per-process'
+      '--disable-dev-shm-usage'
     ]
   }
 
