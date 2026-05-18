@@ -1,7 +1,6 @@
-const qrcode = require("qrcode-terminal");
-const QRCode = require("qrcode");
 const express = require("express");
 const path = require("path");
+const QRCode = require("qrcode");
 
 const { Client, LocalAuth } =
 require("whatsapp-web.js");
@@ -1081,7 +1080,6 @@ ${message.from}
 // =====================================
 
 const express = require("express");
-const path = require("path");
 
 const app = express();
 
