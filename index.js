@@ -1,6 +1,10 @@
 const qrcode = require("qrcode-terminal");
 const QRCode = require("qrcode");
-const { Client, LocalAuth } = require("whatsapp-web.js");
+const express = require("express");
+const path = require("path");
+
+const { Client, LocalAuth } =
+require("whatsapp-web.js");
 
 // =====================================
 // RATEIOS
@@ -96,7 +100,10 @@ const client = new Client({
     headless: true,
     args: [
       '--no-sandbox',
-      '--disable-setuid-sandbox'
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--disable-features=site-per-process'
     ]
   }
 
