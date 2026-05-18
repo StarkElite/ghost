@@ -99,8 +99,6 @@ const client = new Client({
 
     headless: true,
 
-    executablePath: '/usr/bin/chromium',
-
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
