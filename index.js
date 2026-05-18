@@ -961,7 +961,11 @@ if (texto.endsWith(" pago")) {
 
     const vulgoPago = texto.replace(" pago", "").trim();
 
-    const rateio = rateios[message.from];
+const rateio = Object.values(rateios).find(r =>
+    r.participantes.some(
+        p => p.nome.toLowerCase() === vulgoPago
+    )
+);
 
     if (!rateio) {
         await enviar(
@@ -1013,9 +1017,7 @@ ${lista}
 `
 );
 
-return;
-
-    const todosPagos = rateio.participantes.every(p => p.pago);
+  const todosPagos = rateio.participantes.every(p => p.pago);
 
     const bateuMeta = rateio.vendido >= 1000;
 
