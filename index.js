@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const QRCode = require("qrcode");
 
 const { Client, LocalAuth } =
@@ -13,6 +14,11 @@ const rateios = {};
 const clientesBoasVindas = {};
 const rateiosFinalizados = {};
 const antiSpam = {};
+
+const admins = [
+  "5519987112750@c.us"
+  "5516981421879@c.us"
+];
 
 // =====================================
 // TABELA PRODUTOS
@@ -327,7 +333,97 @@ _rateio + produto_
 
     return;
   }
+  
+// =====================================
+// STATUS
+// =====================================
 
+if (texto === "status") {
+
+    const rateio = rateios[message.from];
+
+    if (!rateio) {
+
+        await enviar(
+            message.from,
+            "❌ Nenhum rateio ativo."
+        );
+
+        return;
+    }
+
+    let lista = "";
+
+    let pagos = 0;
+    let pendentes = 0;
+
+    rateio.participantes.forEach((p, index) => {
+
+        const valorProduto =
+            (rateio.valorKg / 1000)
+            * p.quantidade;
+
+        const freteDividido =
+            rateio.frete
+            / rateio.participantes.length;
+
+        const totalPessoa =
+            valorProduto
+            + freteDividido;
+
+        if (p.pago) {
+            pagos++;
+        } else {
+            pendentes++;
+        }
+
+        lista +=
+`${index + 1}. ${p.vulgo}
+
+📦 ${p.quantidade}g
+💰 R$ ${dinheiro(totalPessoa)}
+${p.pago ? "✅ PAGO" : "⌛ PENDENTE"}
+
+`;
+    });
+
+    const porcentagem =
+        (rateio.total / 1000) * 100;
+
+    const progresso =
+        barra(porcentagem);
+
+    await enviar(
+
+        message.from,
+
+`━━━━━━━━━━━━━━
+📊 *_STATUS RATEIO_*
+━━━━━━━━━━━━━━
+
+🌿 ${rateio.produto}
+
+${progresso}
+${porcentagem.toFixed(0)}%
+
+📦 ${rateio.total}g / 1000g
+
+━━━━━━━━━━━━━━
+
+🟢 *_Pagos:_* ${pagos}
+🔴 *_Pendentes:_* ${pendentes}
+👥 *_Participantes:_* ${rateio.participantes.length}
+
+━━━━━━━━━━━━━━
+
+${lista}
+
+👻 *_GHOST MARKET • BR_*`
+    );
+
+    return;
+}
+  
   // =====================================
   // PLANTAS
   // =====================================
@@ -617,111 +713,171 @@ _remover VULGO_
   // ADICIONAR RATEIO
   // =====================================
 
-  if (texto.startsWith('adicionar ')) {
+if (texto.startsWith('adicionar ')) {
 
     if (!rateios[message.from]) {
 
-      await enviar(
-        message.from,
-        `❌ Não existe rateio ativo.`
-      );
+        await enviar(
+            message.from,
+            `❌ Não existe rateio ativo.`
+        );
 
-      return;
+        return;
     }
 
     const partes = texto.split(' ');
 
+    // valida formato
+    if (partes.length < 3) {
+
+        await enviar(
+            message.from,
+            `❌ Formato inválido.
+
+Exemplo:
+_adicionar ghost 200g_`
+        );
+
+        return;
+    }
+
     const vulgo = partes[1];
 
+    // verifica se terminou com g
+    if (!partes[2].endsWith('g')) {
+
+        await enviar(
+            message.from,
+            `❌ Quantidade inválida.
+
+Use:
+200g`
+        );
+
+        return;
+    }
+
     const quantidade =
-      parseInt(
-        partes[2].replace('g', '')
-      );
+        parseInt(
+            partes[2]
+                .replace('g', '')
+                .trim()
+        );
+
+    // parseInt inválido
+    if (isNaN(quantidade)) {
+
+        await enviar(
+            message.from,
+            `❌ Quantidade inválida.`
+        );
+
+        return;
+    }
+
+    // mínimo 100g
+    if (quantidade < 100) {
+
+        await enviar(
+            message.from,
+            `❌ Mínimo permitido: 100g`
+        );
+
+        return;
+    }
 
     const rateio =
-      rateios[message.from];
+        rateios[message.from];
 
+    // verifica limite
     if (
-      (rateio.total + quantidade)
-      > 1000
+        (rateio.total + quantidade)
+        > 1000
     ) {
 
-      await enviar(
+        await enviar(
 
-        message.from,
+            message.from,
 
 `❌ Limite ultrapassado
 
 📉 Disponível:
 ${1000 - rateio.total}g`
-      );
+        );
 
-      return;
+        return;
     }
 
+    // verifica vulgo repetido
     const existe =
-      rateio.participantes.find(
-        p => p.vulgo === vulgo
-      );
+        rateio.participantes.find(
+            p =>
+                p.vulgo.toLowerCase()
+                === vulgo.toLowerCase()
+        );
 
     if (existe) {
 
-      await enviar(
-        message.from,
-        `❌ Vulgo já existe.`
-      );
+        await enviar(
+            message.from,
+            `❌ Vulgo já existe.`
+        );
 
-      return;
+        return;
     }
 
+    // adiciona participante
     rateio.participantes.push({
-      vulgo,
-      quantidade
+
+        vulgo,
+        quantidade,
+        pago: false
+
     });
 
     rateio.total += quantidade;
+
+    // salva json automático
+    fs.writeFileSync(
+        './rateios.json',
+        JSON.stringify(rateios, null, 2)
+    );
 
     let lista = '';
 
     rateio.participantes.forEach((p, index) => {
 
-      const valorProduto =
-        (rateio.valorKg / 1000)
-        * p.quantidade;
+        const valorProduto =
+            (rateio.valorKg / 1000)
+            * p.quantidade;
 
-      const freteDividido =
-        rateio.frete
-        / rateio.participantes.length;
+        const freteDividido =
+            rateio.frete
+            / rateio.participantes.length;
 
-      const totalPessoa =
-        valorProduto
-        + freteDividido;
+        const totalPessoa =
+            valorProduto
+            + freteDividido;
 
-      lista +=
+        lista +=
 
 `${index + 1}️⃣ ${p.vulgo}
 
 📦 ${p.quantidade}g • 💰 R$ ${dinheiro(totalPessoa)}
+${p.pago ? "✅ PAGO" : "⌛ PENDENTE"}
 
 `;
 
     });
 
     const restante =
-      1000 - rateio.total;
+        1000 - rateio.total;
 
     const porcentagem =
-      (rateio.total / 1000) * 100;
+        (rateio.total / 1000) * 100;
 
     const progresso =
-      barra(porcentagem);
-
-    const minutos =
-      Math.floor(
-        (Date.now()
-        - rateio.criadoEm)
-        / 60000
-      );
+        barra(porcentagem);
 
     await enviar(message.from,
 
@@ -751,9 +907,10 @@ ${progresso} ${porcentagem.toFixed(0)}%
 👻 *_GHOST MARKET • BR_*`
     );
 
+    // rateio full
     if (rateio.total >= 1000) {
 
-      await enviar(message.from,
+        await enviar(message.from,
 
 `╔════════════════════╗
       ✅ *_RATEIO FULL_* 👻
@@ -763,16 +920,19 @@ ${progresso} ${porcentagem.toFixed(0)}%
 
 📦 *_1Kg Fechado_*
 
-💳 *_Aguarde PIX_*
+💳 *_Aguardando pagamentos_*
+
+Use:
+_vulgo pagamento confirmado_
 
 ━━━━━━━━━━━━━━━━━━
 👻 *_GHOST MARKET • BR_*`
-      );
+        );
 
     }
 
     return;
-  }
+}
 
   // =====================================
   // ALTERAR RATEIO
@@ -972,15 +1132,24 @@ em uma única mensagem_*
 
 if (texto.endsWith(" pagamento confirmado")) {
 
+    if (!admins.includes(message.from)) {
+
+        await enviar(
+            message.from,
+            "❌ Apenas administradores."
+        );
+
+        return;
+    }
+
     const vulgoPago = texto
         .replace(" pagamento confirmado", "")
         .trim()
         .toLowerCase();
 
-    // procura o rateio do participante
     const rateio = Object.values(rateios).find(r =>
         r.participantes.some(
-            p => p.nome.toLowerCase().trim() === vulgoPago
+            p => p.vulgo.toLowerCase().trim() === vulgoPago
         )
     );
 
@@ -988,15 +1157,14 @@ if (texto.endsWith(" pagamento confirmado")) {
 
         await enviar(
             message.from,
-            "❌ Nenhum participante encontrado em rateios ativos."
+            "❌ Nenhum participante encontrado."
         );
 
         return;
     }
 
-    // procura participante
     const participante = rateio.participantes.find(
-        p => p.nome.toLowerCase().trim() === vulgoPago
+        p => p.vulgo.toLowerCase().trim() === vulgoPago
     );
 
     if (!participante) {
@@ -1009,32 +1177,38 @@ if (texto.endsWith(" pagamento confirmado")) {
         return;
     }
 
-    // verifica se já foi pago
-    if (participante.pago) {
-
-        await enviar(
-            message.from,
-            `⚠️ ${participante.nome} já está marcado como pago.`
-        );
-
-        return;
-    }
-
-    // confirma pagamento
     participante.pago = true;
 
-    // monta lista atualizada
-    let listaAtualizada = "";
+fs.writeFileSync(
+    "./database.json",
+    JSON.stringify({
+        rateios,
+        rateiosFinalizados
+    }, null, 2)
+);
+
+let listaAtualizada = "";
 
     rateio.participantes.forEach((p, index) => {
 
-        listaAtualizada += `${index + 1}. ${p.nome}\n`;
-        listaAtualizada += `📦 ${p.quantidade}g — R$ ${dinheiro(p.valor)}\n`;
+        const valorProduto =
+            (rateio.valorKg / 1000)
+            * p.quantidade;
+
+        const freteDividido =
+            rateio.frete
+            / rateio.participantes.length;
+
+        const totalPessoa =
+            valorProduto
+            + freteDividido;
+
+        listaAtualizada += `${index + 1}. ${p.vulgo}\n`;
+        listaAtualizada += `📦 ${p.quantidade}g — R$ ${dinheiro(totalPessoa)}\n`;
         listaAtualizada += `${p.pago ? "✅ PAGO" : "⌛ PENDENTE"}\n\n`;
 
     });
 
-    // envia confirmação
     await enviar(
         message.from,
 
@@ -1042,7 +1216,7 @@ if (texto.endsWith(" pagamento confirmado")) {
 💸 *_PAGAMENTO CONFIRMADO_*
 ━━━━━━━━━━━━━━
 
-👤 ${participante.nome}
+👤 ${participante.vulgo}
 🌿 ${rateio.produto}
 
 ━━━━━━━━━━━━━━
@@ -1053,20 +1227,31 @@ ${listaAtualizada}
 `
     );
 
-    // verifica se todos pagaram
-    const todosPagos = rateio.participantes.every(
-        p => p.pago
-    );
+    const todosPagos =
+        rateio.participantes.every(
+            p => p.pago
+        );
 
-    // finaliza rateio
     if (todosPagos) {
 
         let listaFinal = "";
 
         rateio.participantes.forEach((p, index) => {
 
-            listaFinal += `${index + 1}. ${p.nome}\n`;
-            listaFinal += `📦 ${p.quantidade}g — R$ ${dinheiro(p.valor)}\n`;
+            const valorProduto =
+                (rateio.valorKg / 1000)
+                * p.quantidade;
+
+            const freteDividido =
+                rateio.frete
+                / rateio.participantes.length;
+
+            const totalPessoa =
+                valorProduto
+                + freteDividido;
+
+            listaFinal += `${index + 1}. ${p.vulgo}\n`;
+            listaFinal += `📦 ${p.quantidade}g — R$ ${dinheiro(totalPessoa)}\n`;
             listaFinal += `✅ PAGO\n\n`;
 
         });
