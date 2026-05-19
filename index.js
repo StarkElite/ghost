@@ -15,10 +15,6 @@ const clientesBoasVindas = {};
 const rateiosFinalizados = {};
 const antiSpam = {};
 
-const admins = [
-  "5516981421879"
-];
-
 // =====================================
 // TABELA PRODUTOS
 // =====================================
@@ -1130,18 +1126,6 @@ em uma única mensagem_*
 // =====================================
 
 if (texto.endsWith(" pagamento confirmado")) {
-
-    const numeroAdmin = message.from.replace("@c.us", "");
-
-    if (!admins.includes(numeroAdmin)) {
-
-        await enviar(
-            message.from,
-            "❌ Apenas administradores."
-        );
-
-        return;
-    }
 
     const vulgoPago = texto
         .replace(" pagamento confirmado", "")
