@@ -16,8 +16,7 @@ const rateiosFinalizados = {};
 const antiSpam = {};
 
 const admins = [
-    "5519987112750@c.us",
-    "5516981421879@c.us"
+  "5516981421879"
 ];
 
 // =====================================
@@ -1132,7 +1131,9 @@ em uma única mensagem_*
 
 if (texto.endsWith(" pagamento confirmado")) {
 
-    if (!admins.includes(message.from)) {
+    const numeroAdmin = message.from.replace("@c.us", "");
+
+    if (!admins.includes(numeroAdmin)) {
 
         await enviar(
             message.from,
